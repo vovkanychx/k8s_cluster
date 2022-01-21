@@ -8,7 +8,7 @@ from constructs import Construct
 
 class K8SClusterStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, vpc: ec2.Vpc, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         admin_user = iam.User(self, "Admin")
@@ -16,7 +16,9 @@ class K8SClusterStack(Stack):
         #create k8s cluster
         k8s_cluster = eks.Cluster(self, "eks-cluster",
             version = eks.KubernetesVersion.V1_21,
-            cluster_name = 'my-eks-cluster',
+            cluster_name = "my-eks-cluster",
+            vpc = vpc,
+            vpc_subnets = [ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT)],
             default_capacity = 0,
             masters_role = admin_user,
             default_capacity_type = eks.DefaultCapacityType.NODEGROUP
@@ -26,10 +28,11 @@ class K8SClusterStack(Stack):
         
         #create managed node group comprised spot instance
         k8s_cluster.add_nodegroup_capacity("managed-node-group",
-            nodegroup_name = 'eks-node-group',
+            nodegroup_name = "eks-node-group",
             instance_types = [
                 ec2.InstanceType("t2.micro")
             ],
+            subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT),
             max_size = 1,
             min_size = 1,
             desired_size = 1,
