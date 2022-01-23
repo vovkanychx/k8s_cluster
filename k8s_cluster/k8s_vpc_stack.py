@@ -11,7 +11,7 @@ class K8SVPCStack(Stack):
 
         self.vpc = ec2.Vpc(self, "k8s-vpc",
             cidr =  "10.0.0.0/16",
-            max_azs = 1,
+            max_azs = 2,
             enable_dns_hostnames = True,
             enable_dns_support = True,
             subnet_configuration = [
