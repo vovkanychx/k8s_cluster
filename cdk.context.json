@@ -1,0 +1,17 @@
+{
+  "network": {
+    "vpc_id": "vpc-05ac2ea1ef4ee8e9c",
+    "private_subnets": [
+      "subnet-06d270b5f6f905038",
+      "subnet-06eb999aacbe312bf",
+      "subnet-0bd190b83779c0018"
+    ],
+    "public_subnets": [
+      "subnet-0eb0f68da97edf53b",
+      "subnet-0166a4d0b4a0c2822"
+    ],
+    "allowed_cidrs": [
+      "10.0.0.0/16"
+    ]
+  }
+}
