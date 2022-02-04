@@ -19,6 +19,20 @@
     "@aws-cdk/core:stackRelativeExports": true,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
     "@aws-cdk/aws-lambda:recognizeVersionProps": true,
-    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true
+    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
+    "network": {
+      "vpc_id": "vpc-0495c8d9f375e4bcf",
+      "private_subnets": [
+        "subnet-0e57259cdf224c7ed",
+        "subnet-0e3644b2d4c11710c"
+      ],
+      "public_subnets": [
+        "subnet-00ad22fb34bfa06bc",
+        "subnet-06fad7c618ae80bf2"
+      ],
+      "allowed_cidrs": [
+        "10.0.0.0/16"
+      ]
+    }
   }
 }

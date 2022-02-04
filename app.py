@@ -4,12 +4,12 @@ import os
 import aws_cdk as cdk
 
 from k8s_cluster.k8s_cluster_stack import K8SClusterStack
-from k8s_cluster.k8s_vpc_stack import K8SVPCStack
-
+# from k8s_cluster.k8s_vpc_stack import K8SVPCStack
 
 app = cdk.App()
-vpc_stack = K8SVPCStack(app, "K8SVPCStack")
-K8SClusterStack(app, "K8SClusterStack", vpc = vpc_stack.vpc
+K8SClusterStack(app, "K8SClusterStack", env = cdk.Environment(
+    account = os.environ["CDK_DEFAULT_ACCOUNT"],
+    region = os.environ["CDK_DEFAULT_REGION"])
     # Uncomment the next line to specialize this stack for the AWS Account
     # and Region that are implied by the current CLI configuration.
     #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),

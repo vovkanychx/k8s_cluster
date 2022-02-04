@@ -8,10 +8,19 @@ from constructs import Construct
 
 class K8SClusterStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, vpc: ec2.Vpc, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        admin_user = iam.User(self, "Admin")
+        #use existing vpc
+        vpc = ec2.Vpc.from_lookup(self, id = "eks-vps-id", 
+            vpc_id = self.node.try_get_context('network')['vpc_id'])
+
+        # create eks admin role
+        admin_user = iam.User(self, "eks-admin-user")
+        eks_master_role = iam.Role(self, 'eks-master-role',
+            role_name = 'eks-admin-role',
+            assumed_by = iam.AccountRootPrincipal()
+        )
 
         #create k8s cluster
         k8s_cluster = eks.Cluster(self, "eks-cluster",
@@ -20,7 +29,7 @@ class K8SClusterStack(Stack):
             vpc = vpc,
             vpc_subnets = [ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT)],
             default_capacity = 0,
-            masters_role = admin_user,
+            masters_role = eks_master_role,
             default_capacity_type = eks.DefaultCapacityType.NODEGROUP
         )
 
