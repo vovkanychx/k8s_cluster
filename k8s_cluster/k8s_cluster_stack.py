@@ -26,7 +26,7 @@ class K8SClusterStack(Stack):
         k8s_cluster = eks.Cluster(self, "eks-cluster",
             version = eks.KubernetesVersion.V1_21,
             cluster_name = "my-eks-cluster",
-            vpc = vpc,
+            vpc = vpc, #vpc must run subnets in atleast 2 different AZs
             vpc_subnets = [ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT)],
             default_capacity = 0,
             masters_role = eks_master_role,
